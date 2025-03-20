@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class KitChime : MonoBehaviour
 {
+    public KitClock clock;
+
+    private void Start()
+    {
+        clock.OnTheHour.AddListener(Chime);
+    }
     public void Chime(int hour)
     {
         Debug.Log("Chiming " + hour + " o'clock !");
