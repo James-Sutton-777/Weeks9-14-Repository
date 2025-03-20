@@ -229,19 +229,7 @@ MonoBehaviour:
   hour: 0
   OnTheHour:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 860762275}
-        m_TargetAssemblyTypeName: KitChime, Assembly-CSharp
-        m_MethodName: Chime
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &239713388
 GameObject:
   m_ObjectHideFlags: 0
@@ -834,6 +822,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23e9cd962dc5279409058d819f27f0c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clock: {fileID: 23430217}
 --- !u!1 &1230641175
 GameObject:
   m_ObjectHideFlags: 0
