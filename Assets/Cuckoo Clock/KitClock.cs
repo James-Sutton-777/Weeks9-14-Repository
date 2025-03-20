@@ -15,7 +15,7 @@ public class KitClock : MonoBehaviour
     public float t;
     public int hour = 0;
 
-    public UnityEvent OnTheHour;
+    public UnityEvent<int> OnTheHour;
     private void Start()
     {
         clockIsRunning = StartCoroutine(ClockCompleteLocamotion());
@@ -44,12 +44,26 @@ public class KitClock : MonoBehaviour
             //yield instruct it to return to line 33 next frame which being the end of the loop causes the program to check to the loop.
             yield return null;
         }
-        OnTheHour.Invoke();
+        hour++;
+        if(hour == 13)
+        {
+            hour = 1;
+        }
+        OnTheHour.Invoke(hour);
     }
 
     public void StopClock()
     {
-        StopCoroutine(clockIsRunning);
-        StopCoroutine(handsMovingOneHour);
+
+        if (clockIsRunning != null)
+        {
+            StopCoroutine(clockIsRunning);
+        }
+
+        if (handsMovingOneHour != null)
+        {
+            StopCoroutine(handsMovingOneHour);
+        }
+
     }
 }
