@@ -7,6 +7,7 @@ public class Bob : MonoBehaviour
 
     SpriteRenderer sr;
     Animator animator;
+    AudioSource audio;
     public float speed = 2;
     public bool canRun = true;
 
@@ -15,6 +16,7 @@ public class Bob : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        audio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -44,5 +46,10 @@ public class Bob : MonoBehaviour
     {
         Debug.Log("The attack animation has finished");
         canRun = true;
+    }
+
+    public void FootstepsSound()
+    {
+        audio.Play();
     }
 }
