@@ -8,6 +8,7 @@ public class Bob : MonoBehaviour
     SpriteRenderer sr;
     Animator animator;
     AudioSource audio;
+    public List<AudioClip> clips;
     public float speed = 2;
     public bool canRun = true;
 
@@ -50,6 +51,7 @@ public class Bob : MonoBehaviour
 
     public void FootstepsSound()
     {
+        audio.clip = clips[(int)Random.Range(0, 10)];
         audio.Play();
     }
 }
