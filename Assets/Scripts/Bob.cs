@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,12 +6,15 @@ using UnityEngine;
 public class Bob : MonoBehaviour
 {
 
+    public CinemachineImpulseSource GiantShake;
+
     SpriteRenderer sr;
     Animator animator;
     AudioSource audio;
     public List<AudioClip> clips;
     public float speed = 2;
     public bool canRun = true;
+
 
     // Start is called before the first frame update
     void Start()
@@ -53,5 +57,7 @@ public class Bob : MonoBehaviour
     {
         audio.clip = clips[(int)Random.Range(0, 10)];
         audio.Play();
+
+        GiantShake.GenerateImpulse();
     }
 }
