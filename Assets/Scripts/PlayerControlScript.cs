@@ -26,12 +26,16 @@ public class PlayerControlScript : MonoBehaviour
     public float area;
 
     //Vectors to control movement
+    Vector3 velocityOfPlayer;
+    Vector3 directionOfPlayer;
+    Vector3 dragOnPlayer;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        engineOutput = Mathf.Clamp(engineOutput, 0, 1);
+        thrust = enginePower * engineOutput;
     }
 
     // Update is called once per frame
