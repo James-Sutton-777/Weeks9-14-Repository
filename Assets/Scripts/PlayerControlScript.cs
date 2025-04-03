@@ -24,9 +24,10 @@ public class PlayerControlScript : MonoBehaviour
     public float turnSpeedRatio;
     public float minTurnSpeedRatio;
     public float area;
+    public float dragCoefficient;
 
     //Vectors to control movement
-    Vector3 velocityOfPlayer;
+    public Vector3 velocityOfPlayer;
     Vector3 directionOfPlayer;
     Vector3 dragOnPlayer;
 
@@ -34,13 +35,35 @@ public class PlayerControlScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        engineOutput = Mathf.Clamp(engineOutput, 0, 1);
-        thrust = enginePower * engineOutput;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        engineOutput = Mathf.Clamp(engineOutput, 0, 1);
+        thrust = enginePower * engineOutput;
+
+        directionOfPlayer = transform.up;
+
+        //turning calculations
+        transform.Rotate(Vector3.forward * ((turnSpeed * turnSpeedRatio) * Input.GetAxisRaw("Horizontal")) * Time.deltaTime);
+
+        dragOnPlayer = -1 * (dragCoefficient * area * (speed * speed) * velocityOfPlayer.normalized);
+
+        velocityOfPlayer += (dragOnPlayer + (transform.up * thrust)) * Time.deltaTime;
+        transform.position += velocityOfPlayer * Time.deltaTime;
+
+        speed = velocityOfPlayer.magnitude;
+
+        if (Input.GetAxisRaw("Vertical") == 1)
+        {
+            engineOutput += outputForce * Time.deltaTime;
+        }
+
+        if (Input.GetAxisRaw("Vertical") == -1)
+        {
+            engineOutput -= outputForce * Time.deltaTime;
+        }
     }
 }
