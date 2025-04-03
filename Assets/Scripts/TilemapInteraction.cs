@@ -25,7 +25,14 @@ public class TilemapInteraction : MonoBehaviour
 
             Vector3Int gridPos = tilemap.WorldToCell(mousePos);
 
-            tilemap.GetTile(gridPos);
+            if(tilemap.GetTile(gridPos) == stone)
+            {
+                Debug.Log("this is stone");
+            }
+            else
+            {
+                Debug.Log("this is grass");
+            }
         }
     }
 }
