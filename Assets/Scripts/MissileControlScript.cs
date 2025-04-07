@@ -43,7 +43,10 @@ public class MissileControlScript : MonoBehaviour
         //seekerDirection = Target.transform.position - transform.position;
         //transform.up = seekerDirection.normalized;
 
-        TargetValidation();
+        if (targetValidated == true)
+        {
+            TargetValidation();
+        }
         MissileSeeker();
 
         targetDirection = targetProjection - transform.position;
@@ -58,10 +61,10 @@ public class MissileControlScript : MonoBehaviour
         {
             projectionDistance = curve.Evaluate(1 - distanceToTarget / thresholdStageTwo) * staticProjection;
         }
-        
+
 
         targetProjection = targetPosition + (targetVelocity * projectionDistance);
-        if(targetValidated == true)
+        if (targetValidated == true)
         {
             targetRotation = Quaternion.LookRotation(Vector3.forward, (targetProjection - transform.position).normalized);
         }
@@ -72,7 +75,14 @@ public class MissileControlScript : MonoBehaviour
 
     void MissileSeeker()
     {
+        //change to target direction instead of projection!!!!!!
         seekerTracking = targetDirection.normalized;
+
+        //hit validator
+        if(distanceToTarget < 2)
+        {
+            Debug.Log("Hit");
+        }
 
         if (Vector3.Angle(seekerTracking, targetPosition) > seekerAngleThreshold)
         {
