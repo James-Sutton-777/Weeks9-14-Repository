@@ -20,6 +20,7 @@ public class MissileControlScript : MonoBehaviour
     public float missileTurnSpeed;
     public float seekerAngleThreshold;
     public float hitRange;
+    public float cruiseSpeed;
 
     public AnimationCurve curve;
 
@@ -59,7 +60,7 @@ public class MissileControlScript : MonoBehaviour
 
     void MissileSeeker()
     {
-        //change to target direction instead of projection!!!!!!
+        //
         seekerTracking = targetDirection.normalized;
 
         //hit validator
@@ -97,5 +98,22 @@ public class MissileControlScript : MonoBehaviour
         targetRotation = Quaternion.LookRotation(Vector3.forward, (targetProjection - transform.position).normalized);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, missileTurnSpeed * Time.deltaTime);
         transform.position += transform.up * speed * Time.deltaTime;
+    }
+
+    void MissileCruiseManeuvering()
+    {
+        transform.position += transform.up * cruiseSpeed * Time.deltaTime;
+    }
+
+    void MissileEvaded()
+    {
+        //destroy
+        //call manager event function for evaded missile
+    }
+
+    void MissileHit()
+    {
+        //destroy
+        //call hit event in manager
     }
 }

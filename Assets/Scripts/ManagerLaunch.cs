@@ -8,6 +8,9 @@ public class ManagerLaunch : MonoBehaviour
 
     public PlayerControlScript Target;
 
+    public GameObject Missiles;
+    public GameObject Indicators;
+
     // Start is called before the first frame update
     void Start()
     {
