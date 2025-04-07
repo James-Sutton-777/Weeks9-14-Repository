@@ -8,6 +8,8 @@ public class IndicatorController : MonoBehaviour
     public GameObject threat;
     public GameObject player;
 
+    public float distanceFromPlayer;
+
     Vector3 threatDirection;
     // Start is called before the first frame update
     void Start()
@@ -19,8 +21,7 @@ public class IndicatorController : MonoBehaviour
     void Update()
     {
         threatDirection = threat.transform.position - player.transform.position;
-        transform.up = threatDirection;
-
-        transform.localPosition = threatDirection.normalized * 5;
+        transform.position = player.transform.position + threatDirection.normalized * distanceFromPlayer;
+        transform.up = threatDirection.normalized;
     }
 }

@@ -52,6 +52,8 @@ public class MissileControlScript : MonoBehaviour
         }
         MissileSeeker();
         MissilePersuitManeuvering();
+
+        Debug.DrawLine(transform.position, Target.transform.position);
         
     }
 
