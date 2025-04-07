@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ public class MissileControlScript : MonoBehaviour
     public float thresholdStageTwo;
     public float missileTurnSpeed;
     public float seekerAngleThreshold;
+    public float hitRange;
 
     public AnimationCurve curve;
 
@@ -25,6 +27,7 @@ public class MissileControlScript : MonoBehaviour
     Vector3 missileVelocity;
     Vector3 seekerDirection;
     Vector3 targetDirection;
+    Vector3 targetDirectionActual;
     Vector3 seekerTracking;
 
     Vector3 targetPosition;
@@ -40,36 +43,15 @@ public class MissileControlScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //seekerDirection = Target.transform.position - transform.position;
-        //transform.up = seekerDirection.normalized;
+        targetDirection = targetProjection - transform.position;
+        distanceToTarget = targetDirection.magnitude;
 
         if (targetValidated == true)
         {
             TargetValidation();
         }
         MissileSeeker();
-
-        targetDirection = targetProjection - transform.position;
-        distanceToTarget = targetDirection.magnitude;
-
-
-        if( distanceToTarget > thresholdStageTwo)
-        {
-            projectionDistance = staticProjection;
-        }
-        else
-        {
-            projectionDistance = curve.Evaluate(1 - distanceToTarget / thresholdStageTwo) * staticProjection;
-        }
-
-
-        targetProjection = targetPosition + (targetVelocity * projectionDistance);
-        if (targetValidated == true)
-        {
-            targetRotation = Quaternion.LookRotation(Vector3.forward, (targetProjection - transform.position).normalized);
-        }
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, missileTurnSpeed * Time.deltaTime);
-        transform.position += transform.up * speed * Time.deltaTime;
+        MissilePersuitManeuvering();
         
     }
 
@@ -79,12 +61,12 @@ public class MissileControlScript : MonoBehaviour
         seekerTracking = targetDirection.normalized;
 
         //hit validator
-        if(distanceToTarget < 2)
+        if(distanceToTarget < hitRange)
         {
             Debug.Log("Hit");
         }
 
-        if (Vector3.Angle(seekerTracking, targetPosition) > seekerAngleThreshold)
+        if (Vector3.Angle(seekerTracking, Target.transform.position) > seekerAngleThreshold)
         {
             Debug.Log("targetlost");
             targetValidated = false;
@@ -95,5 +77,23 @@ public class MissileControlScript : MonoBehaviour
     {
         targetPosition = Target.transform.position;
         targetVelocity = Target.velocityOfPlayer;
+    }
+
+    void MissilePersuitManeuvering()
+    {
+        if (distanceToTarget > thresholdStageTwo)
+        {
+            projectionDistance = staticProjection;
+        }
+        else
+        {
+            projectionDistance = curve.Evaluate(1 - distanceToTarget / thresholdStageTwo) * staticProjection;
+        }
+
+
+        targetProjection = targetPosition + (targetVelocity * projectionDistance);
+        targetRotation = Quaternion.LookRotation(Vector3.forward, (targetProjection - transform.position).normalized);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, missileTurnSpeed * Time.deltaTime);
+        transform.position += transform.up * speed * Time.deltaTime;
     }
 }
