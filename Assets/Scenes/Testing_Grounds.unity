@@ -434,6 +434,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Target: {fileID: 1032707736}
+  Player: {fileID: 1032707733}
+  missiles: []
+  indicators: []
+  missilePrefab: {fileID: 0}
+  indicatorPrefab: {fileID: 0}
+  maxMissileCount: 0
+  timer: 0
 --- !u!1 &1747916595
 GameObject:
   m_ObjectHideFlags: 0
