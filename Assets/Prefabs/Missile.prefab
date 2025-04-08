@@ -106,8 +106,9 @@ MonoBehaviour:
   distanceToTarget: 0
   thresholdStageTwo: 15
   missileTurnSpeed: 180
-  seekerAngleThreshold: 90
+  seekerAngleThreshold: 45
   hitRange: 2
+  cruiseSpeed: 0
   curve:
     serializedVersion: 2
     m_Curve:

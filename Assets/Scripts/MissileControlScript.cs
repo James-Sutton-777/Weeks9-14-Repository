@@ -46,12 +46,11 @@ public class MissileControlScript : MonoBehaviour
     {
         targetDirection = targetProjection - transform.position;
         distanceToTarget = targetDirection.magnitude;
-
+        MissileSeeker();
         if (targetValidated == true)
         {
             TargetValidation();
         }
-        MissileSeeker();
         MissilePersuitManeuvering();
 
         Debug.DrawLine(transform.position, Target.transform.position);
@@ -61,7 +60,7 @@ public class MissileControlScript : MonoBehaviour
     void MissileSeeker()
     {
         //
-        seekerTracking = targetDirection.normalized;
+        seekerTracking = (targetPosition).normalized;
 
         //hit validator
         if(distanceToTarget < hitRange)

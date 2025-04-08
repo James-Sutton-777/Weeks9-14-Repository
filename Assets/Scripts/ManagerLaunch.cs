@@ -30,16 +30,24 @@ public class ManagerLaunch : MonoBehaviour
     {
         Vector3 targetDirection = (Target.transform.position - transform.position).normalized;
         transform.up = targetDirection;
+
+        MissileAndIndicatorSpawner();
     }
 
     void MissileAndIndicatorSpawner()
     {
-        timer += 1 * Time.deltaTime;
+        timer += Time.deltaTime;
         if (timer > 5)
         {
             GameObject newMissile = Instantiate(missilePrefab, transform.position, transform.rotation);
-            GameObject newIndicator = Instantiate(indicatorPrefab, Player.transform.position, Quaternion.identity);
-
+            MissileControlScript missileScript = newMissile.GetComponent<MissileControlScript>();
+            missileScript.Target = Target;
+            missiles.Add(newMissile);
+            GameObject newIndicator = Instantiate(indicatorPrefab, Player.transform);
+            indicators.Add(newIndicator);
+            IndicatorController indicatorScript = newIndicator.GetComponent<IndicatorController>();
+            indicatorScript.threat = newMissile;
+            indicatorScript.player = Player;
             timer = 0;
         }
     }
