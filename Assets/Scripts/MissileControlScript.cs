@@ -9,7 +9,7 @@ public class MissileControlScript : MonoBehaviour
 
     public PlayerControlScript Target;
 
-    public bool targetValidated = true;
+    public bool targetValidated;
 
     public float predictionTime;
     public float staticProjection;
@@ -21,6 +21,7 @@ public class MissileControlScript : MonoBehaviour
     public float seekerAngleThreshold;
     public float hitRange;
     public float cruiseSpeed;
+    public float angle;
 
     public AnimationCurve curve;
 
@@ -33,34 +34,50 @@ public class MissileControlScript : MonoBehaviour
 
     Vector3 targetPosition;
     Vector3 targetVelocity;
+    Vector3 targetDirectionAbsolute;
 
     Quaternion targetRotation;
     // Start is called before the first frame update
     void Start()
     {
         targetDirection = Target.transform.position - transform.position;
+        targetValidated = true;
     }
 
     // Update is called once per frame
     void Update()
     {
+        targetDirectionActual = targetPosition - transform.position;
+        targetDirectionAbsolute = Target.transform.position - transform.position;
         targetDirection = targetProjection - transform.position;
         distanceToTarget = targetDirection.magnitude;
         MissileSeeker();
+
         if (targetValidated == true)
         {
             TargetValidation();
         }
         MissilePersuitManeuvering();
 
+        //for debugging
         Debug.DrawLine(transform.position, Target.transform.position);
+        Quaternion rotation = Quaternion.Euler(0, 0, seekerAngleThreshold);
+        Quaternion rotation2 = Quaternion.Euler(0, 0, (-1 * seekerAngleThreshold));
+        Vector3 seekerFovOne = rotation * (targetDirectionActual * 50);
+        Vector3 seekerFovTwo = rotation2 * (targetDirectionActual * 50);
+        Debug.DrawLine(transform.position, seekerFovOne);
+        Debug.DrawLine(transform.position, seekerFovTwo);
+        Debug.DrawLine(transform.position, transform.position + seekerTracking);
+        angle = Vector3.Angle(seekerTracking, targetDirectionAbsolute);
+        Debug.Log(angle);
         
+
     }
 
     void MissileSeeker()
     {
         //
-        seekerTracking = (targetPosition).normalized;
+        seekerTracking = targetDirectionActual;
 
         //hit validator
         if(distanceToTarget < hitRange)
@@ -68,7 +85,7 @@ public class MissileControlScript : MonoBehaviour
             Debug.Log("Hit");
         }
 
-        if (Vector3.Angle(seekerTracking, Target.transform.position) > seekerAngleThreshold)
+        if (Vector3.Angle(seekerTracking, targetDirectionAbsolute) > seekerAngleThreshold)
         {
             Debug.Log("targetlost");
             targetValidated = false;

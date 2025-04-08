@@ -23,6 +23,7 @@ public class ManagerLaunch : MonoBehaviour
     {
         missiles = new List<GameObject>();
         indicators = new List<GameObject>();
+        MissileAndIndicatorSpawner();
     }
 
     // Update is called once per frame
@@ -31,14 +32,11 @@ public class ManagerLaunch : MonoBehaviour
         Vector3 targetDirection = (Target.transform.position - transform.position).normalized;
         transform.up = targetDirection;
 
-        MissileAndIndicatorSpawner();
+        
     }
 
     void MissileAndIndicatorSpawner()
     {
-        timer += Time.deltaTime;
-        if (timer > 5)
-        {
             GameObject newMissile = Instantiate(missilePrefab, transform.position, transform.rotation);
             MissileControlScript missileScript = newMissile.GetComponent<MissileControlScript>();
             missileScript.Target = Target;
@@ -48,7 +46,5 @@ public class ManagerLaunch : MonoBehaviour
             IndicatorController indicatorScript = newIndicator.GetComponent<IndicatorController>();
             indicatorScript.threat = newMissile;
             indicatorScript.player = Player;
-            timer = 0;
-        }
     }
 }
