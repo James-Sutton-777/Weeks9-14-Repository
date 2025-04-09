@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerControlScript : MonoBehaviour
 {
@@ -31,6 +32,9 @@ public class PlayerControlScript : MonoBehaviour
     Vector3 directionOfPlayer;
     Vector3 dragOnPlayer;
 
+    //Countermeasures event
+    public UnityEvent counterMeasures;
+
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +44,11 @@ public class PlayerControlScript : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+        AircraftControls();
+    }
+
+    void AircraftControls()
     {
         engineOutput = Mathf.Clamp(engineOutput, 0, 1);
         thrust = enginePower * engineOutput;
@@ -64,6 +73,14 @@ public class PlayerControlScript : MonoBehaviour
         if (Input.GetAxisRaw("Vertical") == -1)
         {
             engineOutput -= outputForce * Time.deltaTime;
+        }
+    }
+
+    void DeployCounterMeasures()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            counterMeasures.Invoke();
         }
     }
 }

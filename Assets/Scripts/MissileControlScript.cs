@@ -98,6 +98,11 @@ public class MissileControlScript : MonoBehaviour
         targetVelocity = Target.velocityOfPlayer;
     }
 
+    void TargetDeployingCounterMeasures()
+    {
+        Debug.Log("Target Evading");
+    }
+
     void MissilePersuitManeuvering()
     {
         if (distanceToTarget > thresholdStageTwo)
