@@ -448,9 +448,6 @@ MonoBehaviour:
   area: 1.5
   dragCoefficient: 1
   velocityOfPlayer: {x: 0, y: 0, z: 0}
-  counterMeasures:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &1409998998
 GameObject:
   m_ObjectHideFlags: 0
@@ -554,8 +551,12 @@ MonoBehaviour:
   indicators: []
   missilePrefab: {fileID: 2244627452169911170, guid: cbcf1c3f839a8f342b5d459eea1774f6, type: 3}
   indicatorPrefab: {fileID: 1727718852123682793, guid: 1a0becceca49edf46b94c28a0fa6255e, type: 3}
+  counterMeasures:
+    m_PersistentCalls:
+      m_Calls: []
   maxMissileCount: 5
   timer: 0
+  timerMax: 5
 --- !u!1 &1747916595
 GameObject:
   m_ObjectHideFlags: 0

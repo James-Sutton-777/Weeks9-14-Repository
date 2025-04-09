@@ -99,6 +99,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Target: {fileID: 0}
   targetValidated: 1
+  targetLost: 0
+  confusionTime: 3
   predictionTime: 2
   staticProjection: 2
   speed: 12
@@ -109,6 +111,7 @@ MonoBehaviour:
   seekerAngleThreshold: 45
   hitRange: 2
   cruiseSpeed: 0
+  angle: 0
   curve:
     serializedVersion: 2
     m_Curve:

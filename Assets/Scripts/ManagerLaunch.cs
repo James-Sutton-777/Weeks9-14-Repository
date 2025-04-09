@@ -22,13 +22,14 @@ public class ManagerLaunch : MonoBehaviour
 
     public float maxMissileCount;
     public float timer = 0;
+    public float timerMax;
 
     // Start is called before the first frame update
     void Start()
     {
         missiles = new List<GameObject>();
         indicators = new List<GameObject>();
-        MissileAndIndicatorSpawner();
+        
     }
 
     // Update is called once per frame
@@ -36,6 +37,18 @@ public class ManagerLaunch : MonoBehaviour
     {
         Vector3 targetDirection = (Target.transform.position - transform.position).normalized;
         transform.up = targetDirection;
+
+        DeployCounterMeasures();
+
+        if(missiles.Count < maxMissileCount)
+        {
+            timer += Time.deltaTime;
+            if (timer > timerMax)
+            {
+                MissileAndIndicatorSpawner();
+                timer = 0;
+            }
+        }
 
         
     }
@@ -45,7 +58,7 @@ public class ManagerLaunch : MonoBehaviour
             GameObject newMissile = Instantiate(missilePrefab, transform.position, transform.rotation);
             MissileControlScript missileScript = newMissile.GetComponent<MissileControlScript>();
             missileScript.Target = Target;
-            counterMeasures.AddListener(missileScript.TargetDeployingCounterMeasures);
+            counterMeasures.AddListener(missileScript.CounterMeasureEvent);
             missiles.Add(newMissile);
             GameObject newIndicator = Instantiate(indicatorPrefab, Player.transform);
             indicators.Add(newIndicator);
@@ -56,10 +69,16 @@ public class ManagerLaunch : MonoBehaviour
 
     void DeployCounterMeasures()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetMouseButtonDown(0))
         {
             counterMeasures.Invoke();
+            Debug.Log("target Evading");
         }
+    }
+
+    void CounterMeasuresCooldown()
+    {
+
     }
 
 }

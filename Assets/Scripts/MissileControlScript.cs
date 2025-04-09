@@ -10,6 +10,10 @@ public class MissileControlScript : MonoBehaviour
     public PlayerControlScript Target;
 
     public bool targetValidated;
+    public bool targetLost = false;
+
+    float timer;
+    public float confusionTime;
 
     public float predictionTime;
     public float staticProjection;
@@ -42,7 +46,6 @@ public class MissileControlScript : MonoBehaviour
     {
         targetDirection = Target.transform.position - transform.position;
         targetValidated = true;
-        StartCoroutine(TargetValidation());
     }
 
     // Update is called once per frame
@@ -54,9 +57,9 @@ public class MissileControlScript : MonoBehaviour
         distanceToTarget = targetDirection.magnitude;
         MissileSeeker();
 
-        if (targetValidated == false)
+        if (targetValidated == true)
         {
-            StopCoroutine(TargetValidation());
+            TargetValidation();
         }
         MissilePersuitManeuvering();
 
@@ -70,7 +73,7 @@ public class MissileControlScript : MonoBehaviour
         Debug.DrawLine(transform.position, seekerFovTwo);
         Debug.DrawLine(transform.position, transform.position + seekerTracking);
         angle = Vector3.Angle(seekerTracking, targetDirectionAbsolute);
-        Debug.Log(angle);
+
         
 
     }
@@ -90,22 +93,36 @@ public class MissileControlScript : MonoBehaviour
         {
             Debug.Log("targetlost");
             targetValidated = false;
+            targetLost = true;
         }
     }
 
     
 
-    IEnumerator TargetValidation()
+    void TargetValidation()
     {
         targetPosition = Target.transform.position;
         targetVelocity = Target.velocityOfPlayer;
-
-        yield return null;
     }
 
-    public void TargetDeployingCounterMeasures()
+    public void CounterMeasureEvent()
     {
-        Debug.Log("Target Evading");
+        StartCoroutine(TargetDeployingCounterMeasures());
+    }
+
+    IEnumerator TargetDeployingCounterMeasures()
+    {
+        if (timer != confusionTime)
+        {
+            targetValidated = false;
+            timer = confusionTime;
+
+            Debug.Log(timer);
+
+            yield return new WaitForSeconds(confusionTime);
+        }
+            targetValidated = true;
+            timer = 0;
     }
 
     void MissilePersuitManeuvering()
