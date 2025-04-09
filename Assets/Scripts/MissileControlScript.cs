@@ -42,6 +42,7 @@ public class MissileControlScript : MonoBehaviour
     {
         targetDirection = Target.transform.position - transform.position;
         targetValidated = true;
+        StartCoroutine(TargetValidation());
     }
 
     // Update is called once per frame
@@ -53,9 +54,9 @@ public class MissileControlScript : MonoBehaviour
         distanceToTarget = targetDirection.magnitude;
         MissileSeeker();
 
-        if (targetValidated == true)
+        if (targetValidated == false)
         {
-            TargetValidation();
+            StopCoroutine(TargetValidation());
         }
         MissilePersuitManeuvering();
 
@@ -92,13 +93,17 @@ public class MissileControlScript : MonoBehaviour
         }
     }
 
-    void TargetValidation()
+    
+
+    IEnumerator TargetValidation()
     {
         targetPosition = Target.transform.position;
         targetVelocity = Target.velocityOfPlayer;
+
+        yield return null;
     }
 
-    void TargetDeployingCounterMeasures()
+    public void TargetDeployingCounterMeasures()
     {
         Debug.Log("Target Evading");
     }
@@ -119,11 +124,6 @@ public class MissileControlScript : MonoBehaviour
         targetRotation = Quaternion.LookRotation(Vector3.forward, (targetProjection - transform.position).normalized);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, missileTurnSpeed * Time.deltaTime);
         transform.position += transform.up * speed * Time.deltaTime;
-    }
-
-    void MissileCruiseManeuvering()
-    {
-        transform.position += transform.up * cruiseSpeed * Time.deltaTime;
     }
 
     void MissileEvaded()

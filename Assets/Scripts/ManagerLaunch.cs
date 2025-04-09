@@ -16,6 +16,9 @@ public class ManagerLaunch : MonoBehaviour
     public GameObject missilePrefab;
     public GameObject indicatorPrefab;
 
+    //Countermeasures event
+    public UnityEvent counterMeasures;
+
 
     public float maxMissileCount;
     public float timer = 0;
@@ -42,12 +45,21 @@ public class ManagerLaunch : MonoBehaviour
             GameObject newMissile = Instantiate(missilePrefab, transform.position, transform.rotation);
             MissileControlScript missileScript = newMissile.GetComponent<MissileControlScript>();
             missileScript.Target = Target;
+            counterMeasures.AddListener(missileScript.TargetDeployingCounterMeasures);
             missiles.Add(newMissile);
             GameObject newIndicator = Instantiate(indicatorPrefab, Player.transform);
             indicators.Add(newIndicator);
             IndicatorController indicatorScript = newIndicator.GetComponent<IndicatorController>();
             indicatorScript.threat = newMissile;
             indicatorScript.player = Player;
+    }
+
+    void DeployCounterMeasures()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            counterMeasures.Invoke();
+        }
     }
 
 }
