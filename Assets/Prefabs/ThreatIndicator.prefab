@@ -99,4 +99,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   threat: {fileID: 0}
   player: {fileID: 0}
-  distanceFromPlayer: 5
+  distanceFromPlayer: 7
