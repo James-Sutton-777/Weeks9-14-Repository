@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UIElements;
 
 public class ManagerLaunch : MonoBehaviour
@@ -19,16 +20,21 @@ public class ManagerLaunch : MonoBehaviour
     //Countermeasures event
     public UnityEvent counterMeasures;
 
+    public float score = 0;
+    public bool TargetActive = true;
 
     public float maxMissileCount;
     public float timer = 0;
     public float timerMax;
+    public bool coolDownActive = false;
+    public float cooldownTimer = 10;
+    public float cooldownMax;
 
     // Start is called before the first frame update
     void Start()
     {
         missiles = new List<GameObject>();
-        indicators = new List<GameObject>();
+        indicators = new List<GameObject>();    
         
     }
 
@@ -38,9 +44,16 @@ public class ManagerLaunch : MonoBehaviour
         Vector3 targetDirection = (Target.transform.position - transform.position).normalized;
         transform.up = targetDirection;
 
-        DeployCounterMeasures();
+        if(cooldownTimer >= cooldownMax)
+        {
+            DeployCounterMeasures();
+        }
+        if(coolDownActive == true)
+        {
+            CoolDownOn();
+        }
 
-        if(missiles.Count < maxMissileCount)
+        if((missiles.Count < maxMissileCount) && TargetActive == true)
         {
             timer += Time.deltaTime;
             if (timer > timerMax)
@@ -55,30 +68,44 @@ public class ManagerLaunch : MonoBehaviour
 
     void MissileAndIndicatorSpawner()
     {
-            GameObject newMissile = Instantiate(missilePrefab, transform.position, transform.rotation);
+        GameObject newMissile = Instantiate(missilePrefab, transform.position, transform.rotation);
             MissileControlScript missileScript = newMissile.GetComponent<MissileControlScript>();
             missileScript.Target = Target;
-            counterMeasures.AddListener(missileScript.CounterMeasureEvent);
-            missiles.Add(newMissile);
+        missileScript.Manager = this;
+        counterMeasures.AddListener(missileScript.CounterMeasureEvent);
             GameObject newIndicator = Instantiate(indicatorPrefab, Player.transform);
-            indicators.Add(newIndicator);
             IndicatorController indicatorScript = newIndicator.GetComponent<IndicatorController>();
             indicatorScript.threat = newMissile;
             indicatorScript.player = Player;
+        missileScript.MyIndicator = indicatorScript;
+        indicators.Add(newIndicator);
+        missiles.Add(newMissile);
     }
 
     void DeployCounterMeasures()
     {
         if (Input.GetMouseButtonDown(0))
         {
+            cooldownTimer = 0;
+            coolDownActive = true;
             counterMeasures.Invoke();
             Debug.Log("target Evading");
         }
     }
 
-    void CounterMeasuresCooldown()
+    void CoolDownOn()
     {
+        cooldownTimer += Time.deltaTime;
+        if(cooldownTimer >= cooldownMax)
+        {
+            coolDownActive = false;
+        }
+    }
 
+   public void MissilesEvaded()
+    {
+        score += 1;
+        Debug.Log(score);
     }
 
 }

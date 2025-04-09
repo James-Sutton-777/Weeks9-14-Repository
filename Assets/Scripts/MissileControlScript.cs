@@ -8,6 +8,8 @@ public class MissileControlScript : MonoBehaviour
 {
 
     public PlayerControlScript Target;
+    public ManagerLaunch Manager;
+    public IndicatorController MyIndicator;
 
     public bool targetValidated;
     public bool targetLost = false;
@@ -86,14 +88,14 @@ public class MissileControlScript : MonoBehaviour
         //hit validator
         if(distanceToTarget < hitRange)
         {
+            MissileHit();
             Debug.Log("Hit");
         }
 
         if (Vector3.Angle(seekerTracking, targetDirectionAbsolute) > seekerAngleThreshold)
         {
             Debug.Log("targetlost");
-            targetValidated = false;
-            targetLost = true;
+            MissileEvaded();
         }
     }
 
@@ -145,13 +147,18 @@ public class MissileControlScript : MonoBehaviour
 
     void MissileEvaded()
     {
-        //destroy
-        //call manager event function for evaded missile
+        Destroy(gameObject, 3);
+        Manager.MissilesEvaded();
+        MyIndicator.MissileDead();
+        SpriteRenderer missileSprite = GetComponent<SpriteRenderer>();
+        missileSprite.enabled = false;
     }
-
     void MissileHit()
     {
-        //destroy
-        //call hit event in manager
+        
+        MyIndicator.MissileDead();
+        Target.HitByMissile();
+        Destroy(gameObject, 3);
+        Manager.TargetActive = false;
     }
 }

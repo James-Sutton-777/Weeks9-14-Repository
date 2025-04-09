@@ -6,6 +6,9 @@ using UnityEngine.Events;
 
 public class PlayerControlScript : MonoBehaviour
 {
+    //Object to hold sphere used for death animation;
+    public GameObject DeathSphere;
+
     //Flight model Values
 
     //Engine variables
@@ -71,5 +74,12 @@ public class PlayerControlScript : MonoBehaviour
         {
             engineOutput -= outputForce * Time.deltaTime;
         }
+    }
+
+    public void HitByMissile()
+    {
+        SpriteRenderer PlayerModel = GetComponent<SpriteRenderer>();
+        PlayerModel.enabled = false;
+        GameObject explosion = Instantiate(DeathSphere, transform.position, Quaternion.identity);
     }
 }

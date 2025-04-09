@@ -24,4 +24,11 @@ public class IndicatorController : MonoBehaviour
         transform.position = player.transform.position + threatDirection.normalized * distanceFromPlayer;
         transform.up = threatDirection.normalized;
     }
+
+    public void MissileDead()
+    {
+        Destroy(gameObject,3);
+        SpriteRenderer indicator = GetComponent<SpriteRenderer>();
+        indicator.enabled = false;
+    }
 }
