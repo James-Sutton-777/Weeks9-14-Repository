@@ -100,3 +100,4 @@ MonoBehaviour:
   threat: {fileID: 0}
   player: {fileID: 0}
   distanceFromPlayer: 7
+  timerMax: 3

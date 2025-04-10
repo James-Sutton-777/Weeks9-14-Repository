@@ -101,12 +101,16 @@ public class ManagerLaunch : MonoBehaviour
             GameObject newIndicator = Instantiate(indicatorPrefab, Player.transform);
         //aquire indicator script component
             IndicatorController indicatorScript = newIndicator.GetComponent<IndicatorController>();
-        //assign indicator to corresponding missile
-            indicatorScript.threat = newMissile;
-        //assing indicator player refrence
-            indicatorScript.player = Player;
         //assign missile to corresponding missile
-        missileScript.MyIndicator = indicatorScript;
+        missileScript.MyIndicator = indicatorScript; 
+        //subscribe new listner to countermeasure event
+        counterMeasures.AddListener(indicatorScript.MissilesAreDumb);
+        //assign indicator to corresponding missile
+        indicatorScript.threat = newMissile;
+        //assign spriterender component to spriterender variable
+        indicatorScript.indicator = newIndicator.GetComponent<SpriteRenderer>();
+        //assing indicator player refrence
+        indicatorScript.player = Player;   
         //place both missile and its indicator in list
         indicators.Add(newIndicator);
         missiles.Add(newMissile);
