@@ -50,7 +50,6 @@ public class IndicatorController : MonoBehaviour
     {
         //set event bool to active
         eventOn = true;
-        Debug.Log("Missiles are Dumb");
         
     }
 
@@ -65,7 +64,6 @@ public class IndicatorController : MonoBehaviour
             //count timer for duration of event
             timer += Time.deltaTime;
             
-            Debug.Log("color should change");
         }
         if (timer >= timerMax)
         {
